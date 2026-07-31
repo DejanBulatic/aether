@@ -1593,10 +1593,11 @@
        .authrow .authlink .authsplit .autherr .gbtn
      ====================================================== */
 
+  /* The shell is fixed and does NOT scroll — the scrolling lives on .authroll
+     inside it. A fixed background layer inside a scrolling fixed panel is
+     where browsers stop agreeing, and the grid was being dropped. */
   .auth{
-    position:fixed;inset:0;z-index:300;
-    display:flex;align-items:center;justify-content:center;
-    padding:32px 20px;overflow-y:auto;
+    position:fixed;inset:0;z-index:300;overflow:hidden;
     background:#0d1120;color:#e3e9f8;
     /* The door keeps its own colours so the app's light mode can't reach it.
        The brand four are here too — in daylight they are the darkened set,
@@ -1609,12 +1610,21 @@
     --cyan:#3ff0e0;--violet:#8b7bff;--pink:#ff5ea8;--blue:#4d8cff;
   }
   .auth[hidden]{display:none;}
+  .authroll{
+    position:absolute;inset:0;z-index:1;overflow-y:auto;
+    display:flex;align-items:center;justify-content:center;
+    padding:32px 20px;
+  }
+  /* pinned to the shell, so nothing can clip it */
+  .auth > .bg{position:absolute;}
   body.locked{overflow:hidden;}
 
   .authin{width:100%;max-width:344px;position:relative;z-index:1;}
 
   .authmark{text-align:center;margin-bottom:34px;}
-  #auth .bdot{width:46px;height:46px;margin:0 auto 18px;box-shadow:0 0 36px rgba(139,123,255,0.55);}
+  /* a <span> is inline, and an inline box ignores width and height — in the
+     header it only worked because the flex row forced it to be a block */
+  #auth .bdot{display:block;width:46px;height:46px;margin:0 auto 18px;box-shadow:0 0 36px rgba(139,123,255,0.55);}
   #auth .wm{height:24px;width:auto;margin:0 auto;color:var(--ink);}
   .authtag{
     margin:14px 0 0;font-family:var(--font-body);font-size:13px;line-height:1.5;
@@ -1693,6 +1703,7 @@
 <!-- ================= THE DOOR ================= -->
 <div class="auth" id="auth" role="dialog" aria-modal="true" aria-label="Sign in">
   <div class="bg" aria-hidden="true"><div class="glow"></div><div class="gridlines"></div></div>
+  <div class="authroll">
   <div class="authin">
 
     <div class="authmark">
@@ -1748,6 +1759,7 @@
         <button class="authlink" data-go-pane="signin">Back to sign in</button>
       </div>
     </div>
+  </div>
   </div>
 </div>
 <!-- ================= end THE DOOR ================= -->
@@ -5558,7 +5570,7 @@
   function pane(name){
     panes.forEach(p => { p.hidden = p.dataset.pane !== name; });
     authEl.querySelectorAll('.autherr').forEach(e => { e.hidden = true; });
-    authEl.scrollTop = 0;
+    authEl.querySelector('.authroll').scrollTop = 0;
     const first = authEl.querySelector('.authpane:not([hidden]) .field');
     if (first && matchMedia('(min-width:1000px)').matches) first.focus();
   }
