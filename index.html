@@ -1617,6 +1617,18 @@
   }
   /* pinned to the shell, so nothing can clip it */
   .auth > .bg{position:absolute;}
+
+  /* The door draws its own grid rather than borrowing .gridlines. The shared
+     one depends on a custom property for its colour and a mask for its fade,
+     and inside this overlay it never appeared. Here the colour is written in
+     and there is no mask, so there is nothing left to go missing. */
+  .authgrid{
+    position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(120,160,255,0.22) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,160,255,0.22) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
   body.locked{overflow:hidden;}
 
   .authin{width:100%;max-width:344px;position:relative;z-index:1;}
@@ -1702,7 +1714,8 @@
 
 <!-- ================= THE DOOR ================= -->
 <div class="auth" id="auth" role="dialog" aria-modal="true" aria-label="Sign in">
-  <div class="bg" aria-hidden="true"><div class="glow"></div><div class="gridlines"></div></div>
+  <div class="bg" aria-hidden="true"><div class="glow"></div></div>
+  <div class="authgrid" aria-hidden="true"></div>
   <div class="authroll">
   <div class="authin">
 

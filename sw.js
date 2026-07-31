@@ -8,7 +8,7 @@
 // fetched network-first, so a new index.html appears on its own as soon as
 // there's signal. The bump is what refreshes the cache-first half — icons, the
 // manifest, the link preview — which otherwise never gets looked at again.
-const VERSION = 'v91';
+const VERSION = 'v92';
 const CACHE = 'cosmo-' + VERSION;
 const SHELL = [
   './',
