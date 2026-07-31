@@ -1585,11 +1585,172 @@
   body[data-mode="dark"][data-dark="fluid"] .pstrip,
   body[data-mode="dark"][data-dark="fluid"] .cbar{border-radius:8px;overflow:hidden;}
   /* ================= end DARK · Fluid night ================= */
+  /* ================= THE DOOR (sign in) =================
+     Always dark, whatever mode the app is in: the manifest paints the launch
+     screen #0d1120, and a light login would flash white straight after it.
+     Everything here is scoped to #auth. New names:
+       .auth .authin .authmark .authtag .authpane .authttl .authsay
+       .authrow .authlink .authsplit .autherr .gbtn
+     ====================================================== */
+
+  .auth{
+    position:fixed;inset:0;z-index:300;
+    display:flex;align-items:center;justify-content:center;
+    padding:32px 20px;overflow-y:auto;
+    background:#0d1120;color:#e3e9f8;
+    /* The door keeps its own colours so the app's light mode can't reach it.
+       The brand four are here too — in daylight they are the darkened set,
+       which would put a muddy orb and an unreadable pink on a black page. */
+    --bg:#0d1120;
+    --ink:#e3e9f8;--ink-dim:#a3aecd;--ink-faint:#707c9f;
+    --line:rgba(120,160,255,0.26);--panel:rgba(32,38,58,0.55);
+    --panel-brd:rgba(120,160,255,0.18);--accent-ink:#4fe6d6;
+    --nav-on-bg:rgba(79,230,214,0.10);--nav-on-brd:rgba(79,230,214,0.24);
+    --cyan:#3ff0e0;--violet:#8b7bff;--pink:#ff5ea8;--blue:#4d8cff;
+  }
+  .auth[hidden]{display:none;}
+  body.locked{overflow:hidden;}
+
+  .authin{width:100%;max-width:344px;position:relative;z-index:1;}
+
+  .authmark{text-align:center;margin-bottom:34px;}
+  #auth .bdot{width:46px;height:46px;margin:0 auto 18px;box-shadow:0 0 36px rgba(139,123,255,0.55);}
+  #auth .wm{height:24px;width:auto;margin:0 auto;color:var(--ink);}
+  .authtag{
+    margin:14px 0 0;font-family:var(--font-body);font-size:13px;line-height:1.5;
+    color:var(--ink-dim);
+  }
+
+  .authpane[hidden]{display:none;}
+  .authttl{
+    font-family:var(--font-head);font-size:22px;font-weight:600;letter-spacing:-.4px;
+    margin:0 0 8px;text-align:center;
+  }
+  .authsay{
+    font-family:var(--font-body);font-size:13.5px;line-height:1.55;color:var(--ink-dim);
+    margin:0 0 22px;text-align:center;
+  }
+  .authsay b{color:var(--ink);font-weight:500;}
+
+  #auth .field{
+    background:rgba(32,38,58,0.55);border:1px solid var(--panel-brd);color:var(--ink);
+    margin-bottom:10px;
+  }
+  #auth .field::placeholder{color:var(--ink-faint);}
+  #auth .field:focus{border-color:var(--accent-ink);}
+
+  /* the buttons are the app's, laid full width and given room to be tapped */
+  #auth .btn{
+    display:block;width:100%;text-align:center;padding:15px 18px;font-size:12px;
+    margin-top:4px;
+  }
+
+  .authrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 4px;}
+  .authrow.mid{justify-content:center;}
+  .authlink{
+    background:none;border:none;padding:4px 2px;cursor:pointer;
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;color:var(--ink-dim);
+    transition:color .2s ease;
+  }
+  .authlink:hover{color:var(--accent-ink);}
+  .authlink.quiet{color:var(--ink-faint);}
+  .authlink.quiet:hover{color:var(--accent-ink);}
+
+  /* or */
+  .authsplit{
+    display:flex;align-items:center;gap:12px;margin:22px 0 14px;
+    font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+  .authsplit::before,.authsplit::after{content:'';flex:1;height:1px;background:var(--line);}
+
+  /* an error is late-or-wrong, so it is pink, like everything else that is */
+  .autherr{
+    font-family:var(--font-body);font-size:12.5px;line-height:1.45;color:var(--pink);
+    margin:-4px 0 12px;min-height:0;
+  }
+  .autherr[hidden]{display:none;}
+
+  /* Google's own mark can't go here until we wire it — their brand rules ask
+     for their button. Until then this is a plain one that says the words. */
+  .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;}
+  .gbtn .glyph{
+    width:17px;height:17px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;
+    background:#fff;color:#1b1720;
+    font-family:var(--font-head);font-size:11px;font-weight:700;line-height:1;
+  }
+
+  @media (min-width:1000px){
+    .authin{max-width:360px;}
+  }
+  /* ================= end THE DOOR ================= */
 </style>
 </head>
 <body data-mode="light" data-dark="fluid">
 
 <div class="bg" aria-hidden="true"><div class="glow"></div><div class="gridlines"></div></div>
+
+<!-- ================= THE DOOR ================= -->
+<div class="auth" id="auth" role="dialog" aria-modal="true" aria-label="Sign in">
+  <div class="bg" aria-hidden="true"><div class="glow"></div><div class="gridlines"></div></div>
+  <div class="authin">
+
+    <div class="authmark">
+      <span class="bdot"></span>
+      <svg class="wm" viewBox="50 -714 3784 728" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cosmo"><path fill="currentColor" d="M332 14Q202 14 126.0 -58.5Q50 -131 50 -266V-434Q50 -569 126.0 -641.5Q202 -714 332 -714Q461 -714 531.5 -643.5Q602 -573 602 -450V-444H472V-454Q472 -516 437.5 -556.0Q403 -596 332 -596Q262 -596 222.0 -553.0Q182 -510 182 -436V-264Q182 -191 222.0 -147.5Q262 -104 332 -104Q403 -104 437.5 -144.5Q472 -185 472 -246V-264H602V-250Q602 -127 531.5 -56.5Q461 14 332 14ZM1082.0 14Q950.0 14 872.0 -58.5Q794.0 -131 794.0 -266V-434Q794.0 -569 872.0 -641.5Q950.0 -714 1082.0 -714Q1214.0 -714 1292.0 -641.5Q1370.0 -569 1370.0 -434V-266Q1370.0 -131 1292.0 -58.5Q1214.0 14 1082.0 14ZM1082.0 -104Q1156.0 -104 1197.0 -147.0Q1238.0 -190 1238.0 -262V-438Q1238.0 -510 1197.0 -553.0Q1156.0 -596 1082.0 -596Q1009.0 -596 967.5 -553.0Q926.0 -510 926.0 -438V-262Q926.0 -190 967.5 -147.0Q1009.0 -104 1082.0 -104ZM1829.0 14Q1748.0 14 1686.0 -15.0Q1624.0 -44 1589.0 -98.0Q1554.0 -152 1554.0 -228V-256H1684.0V-228Q1684.0 -165 1723.0 -133.5Q1762.0 -102 1829.0 -102Q1897.0 -102 1930.5 -129.0Q1964.0 -156 1964.0 -198Q1964.0 -227 1947.5 -245.0Q1931.0 -263 1899.5 -274.5Q1868.0 -286 1823.0 -296L1800.0 -301Q1728.0 -317 1676.5 -341.5Q1625.0 -366 1597.5 -406.0Q1570.0 -446 1570.0 -510Q1570.0 -574 1600.5 -619.5Q1631.0 -665 1686.5 -689.5Q1742.0 -714 1817.0 -714Q1892.0 -714 1950.5 -688.5Q2009.0 -663 2042.5 -612.5Q2076.0 -562 2076.0 -486V-456H1946.0V-486Q1946.0 -526 1930.5 -550.5Q1915.0 -575 1886.0 -586.5Q1857.0 -598 1817.0 -598Q1757.0 -598 1728.5 -575.5Q1700.0 -553 1700.0 -514Q1700.0 -488 1713.5 -470.0Q1727.0 -452 1754.0 -440.0Q1781.0 -428 1823.0 -419L1846.0 -414Q1921.0 -398 1976.5 -373.0Q2032.0 -348 2063.0 -307.0Q2094.0 -266 2094.0 -202Q2094.0 -138 2061.5 -89.5Q2029.0 -41 1969.5 -13.5Q1910.0 14 1829.0 14ZM2292.0 0V-700H2537.0L2658.0 -90H2676.0L2797.0 -700H3042.0V0H2914.0V-603H2896.0L2776.0 0H2558.0L2438.0 -603H2420.0V0ZM3546.0 14Q3414.0 14 3336.0 -58.5Q3258.0 -131 3258.0 -266V-434Q3258.0 -569 3336.0 -641.5Q3414.0 -714 3546.0 -714Q3678.0 -714 3756.0 -641.5Q3834.0 -569 3834.0 -434V-266Q3834.0 -131 3756.0 -58.5Q3678.0 14 3546.0 14ZM3546.0 -104Q3620.0 -104 3661.0 -147.0Q3702.0 -190 3702.0 -262V-438Q3702.0 -510 3661.0 -553.0Q3620.0 -596 3546.0 -596Q3473.0 -596 3431.5 -553.0Q3390.0 -510 3390.0 -438V-262Q3390.0 -190 3431.5 -147.0Q3473.0 -104 3546.0 -104Z"/></svg>
+      <p class="authtag">Intelligence for every area of your life</p>
+    </div>
+
+    <div class="authpane" data-pane="signin">
+      <div class="autherr" id="errSignin" hidden></div>
+      <input class="field" id="siEmail" type="email" inputmode="email" autocomplete="username" placeholder="Email" maxlength="120">
+      <input class="field" id="siPass" type="password" autocomplete="current-password" placeholder="Password" maxlength="120">
+      <button class="btn primary" id="siGo">Sign in</button>
+      <div class="authrow">
+        <button class="authlink quiet" data-go-pane="signup">Create an account</button>
+        <button class="authlink quiet" data-go-pane="forgot">Forgot password?</button>
+      </div>
+      <div class="authsplit">or</div>
+      <button class="btn plain gbtn" id="siGoogle"><span class="glyph">G</span>Continue with Google</button>
+      <button class="btn plain" id="siMagic">Email me a sign-in link</button>
+    </div>
+
+    <div class="authpane" data-pane="signup" hidden>
+      <h2 class="authttl">Create your account</h2>
+      <p class="authsay">One account, yours alone. Nothing here is shared with anybody.</p>
+      <div class="autherr" id="errSignup" hidden></div>
+      <input class="field" id="suName" type="text" autocomplete="name" placeholder="Your name" maxlength="60">
+      <input class="field" id="suEmail" type="email" inputmode="email" autocomplete="username" placeholder="Email" maxlength="120">
+      <input class="field" id="suPass" type="password" autocomplete="new-password" placeholder="Password — at least 8 characters" maxlength="120">
+      <input class="field" id="suPass2" type="password" autocomplete="new-password" placeholder="Repeat the password" maxlength="120">
+      <button class="btn primary" id="suGo">Create account</button>
+      <div class="authrow mid">
+        <button class="authlink" data-go-pane="signin">I already have an account</button>
+      </div>
+    </div>
+
+    <div class="authpane" data-pane="forgot" hidden>
+      <h2 class="authttl">Set a new password</h2>
+      <p class="authsay">Type your email and a link comes back that lets you choose a new one.</p>
+      <div class="autherr" id="errForgot" hidden></div>
+      <input class="field" id="fgEmail" type="email" inputmode="email" autocomplete="username" placeholder="Email" maxlength="120">
+      <button class="btn primary" id="fgGo">Send the link</button>
+      <div class="authrow mid">
+        <button class="authlink" data-go-pane="signin">Back to sign in</button>
+      </div>
+    </div>
+
+    <div class="authpane" data-pane="sent" hidden>
+      <h2 class="authttl">Check your email</h2>
+      <p class="authsay" id="sentSay"></p>
+      <button class="btn plain" id="sentAgain">Send it again</button>
+      <div class="authrow mid">
+        <button class="authlink" data-go-pane="signin">Back to sign in</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ================= end THE DOOR ================= -->
 
 <nav class="nav" aria-label="Main menu">
   <div class="railmark"><span class="bdot"></span><svg class="wm" viewBox="50 -714 3784 728" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cosmo"><path fill="currentColor" d="M332 14Q202 14 126.0 -58.5Q50 -131 50 -266V-434Q50 -569 126.0 -641.5Q202 -714 332 -714Q461 -714 531.5 -643.5Q602 -573 602 -450V-444H472V-454Q472 -516 437.5 -556.0Q403 -596 332 -596Q262 -596 222.0 -553.0Q182 -510 182 -436V-264Q182 -191 222.0 -147.5Q262 -104 332 -104Q403 -104 437.5 -144.5Q472 -185 472 -246V-264H602V-250Q602 -127 531.5 -56.5Q461 14 332 14ZM1082.0 14Q950.0 14 872.0 -58.5Q794.0 -131 794.0 -266V-434Q794.0 -569 872.0 -641.5Q950.0 -714 1082.0 -714Q1214.0 -714 1292.0 -641.5Q1370.0 -569 1370.0 -434V-266Q1370.0 -131 1292.0 -58.5Q1214.0 14 1082.0 14ZM1082.0 -104Q1156.0 -104 1197.0 -147.0Q1238.0 -190 1238.0 -262V-438Q1238.0 -510 1197.0 -553.0Q1156.0 -596 1082.0 -596Q1009.0 -596 967.5 -553.0Q926.0 -510 926.0 -438V-262Q926.0 -190 967.5 -147.0Q1009.0 -104 1082.0 -104ZM1829.0 14Q1748.0 14 1686.0 -15.0Q1624.0 -44 1589.0 -98.0Q1554.0 -152 1554.0 -228V-256H1684.0V-228Q1684.0 -165 1723.0 -133.5Q1762.0 -102 1829.0 -102Q1897.0 -102 1930.5 -129.0Q1964.0 -156 1964.0 -198Q1964.0 -227 1947.5 -245.0Q1931.0 -263 1899.5 -274.5Q1868.0 -286 1823.0 -296L1800.0 -301Q1728.0 -317 1676.5 -341.5Q1625.0 -366 1597.5 -406.0Q1570.0 -446 1570.0 -510Q1570.0 -574 1600.5 -619.5Q1631.0 -665 1686.5 -689.5Q1742.0 -714 1817.0 -714Q1892.0 -714 1950.5 -688.5Q2009.0 -663 2042.5 -612.5Q2076.0 -562 2076.0 -486V-456H1946.0V-486Q1946.0 -526 1930.5 -550.5Q1915.0 -575 1886.0 -586.5Q1857.0 -598 1817.0 -598Q1757.0 -598 1728.5 -575.5Q1700.0 -553 1700.0 -514Q1700.0 -488 1713.5 -470.0Q1727.0 -452 1754.0 -440.0Q1781.0 -428 1823.0 -419L1846.0 -414Q1921.0 -398 1976.5 -373.0Q2032.0 -348 2063.0 -307.0Q2094.0 -266 2094.0 -202Q2094.0 -138 2061.5 -89.5Q2029.0 -41 1969.5 -13.5Q1910.0 14 1829.0 14ZM2292.0 0V-700H2537.0L2658.0 -90H2676.0L2797.0 -700H3042.0V0H2914.0V-603H2896.0L2776.0 0H2558.0L2438.0 -603H2420.0V0ZM3546.0 14Q3414.0 14 3336.0 -58.5Q3258.0 -131 3258.0 -266V-434Q3258.0 -569 3336.0 -641.5Q3414.0 -714 3546.0 -714Q3678.0 -714 3756.0 -641.5Q3834.0 -569 3834.0 -434V-266Q3834.0 -131 3756.0 -58.5Q3678.0 14 3546.0 14ZM3546.0 -104Q3620.0 -104 3661.0 -147.0Q3702.0 -190 3702.0 -262V-438Q3702.0 -510 3661.0 -553.0Q3620.0 -596 3546.0 -596Q3473.0 -596 3431.5 -553.0Q3390.0 -510 3390.0 -438V-262Q3390.0 -190 3431.5 -147.0Q3473.0 -104 3546.0 -104Z"/></svg></div>
@@ -5379,6 +5540,128 @@
   suGrab.addEventListener('pointerup', suGrabEnd);
   suGrab.addEventListener('pointercancel', suGrabEnd);
   /* ================= end FINANCE · SUBSCRIPTIONS ================= */
+
+  /* ==================================================================
+     THE DOOR — sign in, sign up, reset, magic link, Google.
+
+     Nothing here talks to a server yet, and it can't: a file served from
+     GitHub Pages has nothing to send an email from. Every route below ends
+     in a fake success so the whole thing can be walked through and judged.
+
+     When Supabase goes in, only the five functions marked SERVER change.
+     No markup and no styling moves.
+     ================================================================== */
+  const authEl = document.getElementById('auth');
+  const panes  = [...authEl.querySelectorAll('.authpane')];
+  const okMail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+
+  function pane(name){
+    panes.forEach(p => { p.hidden = p.dataset.pane !== name; });
+    authEl.querySelectorAll('.autherr').forEach(e => { e.hidden = true; });
+    authEl.scrollTop = 0;
+    const first = authEl.querySelector('.authpane:not([hidden]) .field');
+    if (first && matchMedia('(min-width:1000px)').matches) first.focus();
+  }
+  function fail(id, msg){
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.hidden = false;
+  }
+  authEl.addEventListener('click', e => {
+    const b = e.target.closest('[data-go-pane]');
+    if (b) pane(b.dataset.goPane);
+  });
+
+  /* enter moves the way you'd expect it to */
+  authEl.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const open = authEl.querySelector('.authpane:not([hidden])');
+    if (!open) return;
+    const go = open.querySelector('.btn.primary') || open.querySelector('.btn');
+    if (go){ e.preventDefault(); go.click(); }
+  });
+
+  function letMeIn(){
+    authEl.hidden = true;
+    document.body.classList.remove('locked');
+  }
+
+  /* ---- SERVER · these five are the whole of the wiring job ---- */
+  function serverSignIn(email, password){ return Promise.resolve({ ok:true }); }
+  function serverSignUp(name, email, password){ return Promise.resolve({ ok:true }); }
+  function serverReset(email){ return Promise.resolve({ ok:true }); }
+  function serverMagic(email){ return Promise.resolve({ ok:true }); }
+  function serverGoogle(){ return Promise.resolve({ ok:true }); }
+  /* ------------------------------------------------------------ */
+
+  let sentTo = '', sentKind = 'link';
+  function showSent(email, kind){
+    sentTo = email; sentKind = kind;
+    document.getElementById('sentSay').innerHTML =
+      (kind === 'reset'
+        ? 'A link to set a new password is on its way to <b>' + esc(email) + '</b>.'
+        : 'A link that signs you straight in is on its way to <b>' + esc(email) + '</b>.') +
+      ' It works once, and it stops working after an hour.';
+    pane('sent');
+  }
+
+  document.getElementById('siGo').addEventListener('click', () => {
+    const email = document.getElementById('siEmail').value.trim();
+    const pass  = document.getElementById('siPass').value;
+    if (!okMail(email)) return fail('errSignin', 'That email doesn\u2019t look right.');
+    if (!pass)          return fail('errSignin', 'Type your password.');
+    serverSignIn(email, pass).then(r => {
+      if (!r.ok) return fail('errSignin', 'That email and password don\u2019t match.');
+      letMeIn();
+      say('Signed in.');
+    });
+  });
+
+  document.getElementById('suGo').addEventListener('click', () => {
+    const name  = document.getElementById('suName').value.trim();
+    const email = document.getElementById('suEmail').value.trim();
+    const p1    = document.getElementById('suPass').value;
+    const p2    = document.getElementById('suPass2').value;
+    if (!name)          return fail('errSignup', 'What should Cosmo call you?');
+    if (!okMail(email)) return fail('errSignup', 'That email doesn\u2019t look right.');
+    if (p1.length < 8)  return fail('errSignup', 'The password needs at least 8 characters.');
+    if (p1 !== p2)      return fail('errSignup', 'The two passwords aren\u2019t the same.');
+    serverSignUp(name, email, p1).then(r => {
+      if (!r.ok) return fail('errSignup', 'That account couldn\u2019t be made.');
+      letMeIn();
+      say('Welcome, ' + name + '.');
+    });
+  });
+
+  document.getElementById('fgGo').addEventListener('click', () => {
+    const email = document.getElementById('fgEmail').value.trim();
+    if (!okMail(email)) return fail('errForgot', 'That email doesn\u2019t look right.');
+    serverReset(email).then(() => showSent(email, 'reset'));
+  });
+
+  document.getElementById('siMagic').addEventListener('click', () => {
+    const email = document.getElementById('siEmail').value.trim();
+    if (!okMail(email)) return fail('errSignin', 'Type your email first and the link goes there.');
+    serverMagic(email).then(() => showSent(email, 'link'));
+  });
+
+  document.getElementById('siGoogle').addEventListener('click', () => {
+    serverGoogle().then(r => {
+      if (!r.ok) return fail('errSignin', 'Google didn\u2019t let us in.');
+      letMeIn();
+      say('Signed in.');
+    });
+  });
+
+  document.getElementById('sentAgain').addEventListener('click', () => {
+    (sentKind === 'reset' ? serverReset(sentTo) : serverMagic(sentTo))
+      .then(() => say('Sent again.'));
+  });
+
+  /* the door is shut on arrival. Reload to see it again until the account
+     button exists and can sign you out. */
+  document.body.classList.add('locked');
+  /* ================= end THE DOOR ================= */
 
   // ---------- installable ----------
   // the service worker is what lets the phone keep Cosmo as a real app:
