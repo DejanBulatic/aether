@@ -13,8 +13,13 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Aether">
 <meta name="mobile-web-app-capable" content="yes">
+<!-- the fonts moved out of the stylesheet: a CSS @import is render-blocking and
+     serialised, so if fonts.googleapis.com is slow or unreachable the whole page
+     waits on it and shows nothing. As a <link> the page paints either way. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
   body{
     --cyan:#3ff0e0; --violet:#8b7bff; --pink:#ff5ea8; --blue:#4d8cff;
@@ -72,72 +77,65 @@
   }
 
   /* ---- LIGHT (Cosmo in daylight) ---- */
-  /* ---- light ----
-     A white page carrying grey glass cards, not a pale page carrying white
-     ones. Every colour here is set to clear 4.5:1 against the background,
-     because Aether puts its accent on its SMALLEST text — 11px eyebrows,
-     9.5px chips — and small text is the strict case.
-
-     The earlier light theme failed this badly: pink read at 2.5:1, the accent
-     at 3.0, every section colour around 3.2. It was made by deepening the dark
-     theme's colours, which was the right instinct and about a third short.
-     Dark themes get contrast free — any saturated colour is bright on near
-     black. On a pale page a colour has to be genuinely dark to read, and dark
-     AND saturated is a much narrower band. Hence these.
-
-     If you add a colour here, check it against #ffffff before you ship it. */
+  /* ---- LIGHT · "Daylight" ----
+     Warm paper, soft ambient light, glass panels, one warm accent.
+     Depth comes from shadow, not from coloured borders — a light theme
+     built out of a dark one always ends up as outlines on a pale page.
+     Every colour here clears 4.5:1 on #faf8f5, because the accent lands
+     on the SMALLEST text in the app (11px eyebrows, 9.5px chips). */
   body[data-mode="light"]{
     color-scheme:light;
-    --bg:#ffffff;
-    --panel:rgba(15,23,42,0.045);
-    --panel-brd:rgba(15,23,42,0.09);
-    --ink:#0f172a; --ink-dim:#4b5568; --ink-faint:#6b7793;
-    --line:rgba(15,23,42,0.10);
+    --bg:#faf8f5;
+    --panel:rgba(255,255,255,0.66);
+    --panel-brd:rgba(38,28,20,0.08);
+    --ink:#1b1720; --ink-dim:#585062; --ink-faint:#6c6578;
+    --line:rgba(38,28,20,0.09);
 
     /* the brand colours go deep here — they are not shared with dark */
-    --cyan:#008678; --violet:#805ee5; --pink:#e31974; --blue:#386fef;
+    --cyan:#0f7d72; --violet:#6a45d4; --pink:#c1306b; --blue:#2f62d9;
 
-    --accent-ink:#008678;
-    --nav-on-bg:rgba(0,134,120,0.10);
-    --nav-on-brd:rgba(0,134,120,0.40);
-    --h1-grad:linear-gradient(120deg,#0f172a 20%,#805ee5 55%,#008678 100%);
-    --card-brd:rgba(0,134,120,0.45);
-    --card-glow:0 0 0 1px rgba(0,134,120,0.12), 0 0 30px rgba(0,134,120,0.10);
-    --hover-brd:rgba(128,94,229,0.55);
-    --hover-sh:0 0 0 1px rgba(128,94,229,0.25), 0 14px 40px rgba(56,111,239,0.16);
-    --check-off-brd:rgba(15,23,42,0.24);
-    --check-done-bg:#008678; --check-done-tick:#ffffff;
-    --check-done-glow:0 0 10px rgba(0,134,120,0.35);
-    --bar-track:rgba(15,23,42,0.10);
-    --bar-fill:linear-gradient(90deg,#008678,#805ee5);
-    --bar-glow:0 0 12px rgba(0,134,120,0.28);
-    --ghost-brd:rgba(15,23,42,0.20);
-    --scrim:rgba(15,23,42,0.35);
-    --toast-bg:rgba(255,255,255,0.97); --toast-brd:rgba(15,23,42,0.13);
-    --toast-sh:0 12px 30px rgba(15,23,42,0.14);
+    /* daylight accent: the warm end of the spectrum, where night is cyan */
+    --accent-ink:#a04b00;
+    --nav-on-bg:rgba(160,75,0,0.10);
+    --nav-on-brd:rgba(160,75,0,0.26);
+    --h1-grad:linear-gradient(115deg,#1b1720 12%,#6a45d4 58%,#c9741c 100%);
+    --card-brd:rgba(38,28,20,0.07);
+    --card-glow:inset 0 1px 0 rgba(255,255,255,0.85), 0 1px 2px rgba(38,28,20,0.04), 0 10px 26px -12px rgba(90,58,24,0.22);
+    --hover-brd:rgba(160,75,0,0.24);
+    --hover-sh:inset 0 1px 0 rgba(255,255,255,0.9), 0 2px 4px rgba(38,28,20,0.05), 0 22px 44px -16px rgba(90,58,24,0.30);
+    --check-off-brd:rgba(38,28,20,0.22);
+    --check-done-bg:#2f62d9; --check-done-tick:#f7faff;
+    --check-done-glow:0 0 0 4px rgba(47,98,217,0.12);
+    --bar-track:rgba(38,28,20,0.08);
+    --bar-fill:linear-gradient(90deg,#2f62d9,#4a86ec 52%,#6da8f7);
+    --bar-glow:0 1px 6px rgba(47,98,217,0.30);
+    --ghost-brd:rgba(38,28,20,0.16);
+    --scrim:rgba(34,24,16,0.30);
+    --toast-bg:rgba(255,252,248,0.94); --toast-brd:rgba(38,28,20,0.09);
+    --toast-sh:0 20px 44px -16px rgba(60,40,20,0.34);
 
     /* one colour per project section */
-    --sec-ready:#386fef;   --sec-ready-brd:rgba(56,111,239,0.45);
-    --sec-paused:#ae6504;  --sec-paused-brd:rgba(174,101,4,0.45);
-    --sec-done:#6b7793;    --sec-done-brd:rgba(107,119,147,0.45);
-    --sec-idea:#e31974;    --sec-idea-brd:rgba(227,25,116,0.45);
+    --sec-ready:#2f62d9;  --sec-ready-brd:rgba(47,98,217,0.30);
+    --sec-paused:#a15c00; --sec-paused-brd:rgba(161,92,0,0.30);
+    --sec-done:#6b6478;   --sec-done-brd:rgba(107,100,120,0.30);
+    --sec-idea:#c1306b;   --sec-idea-brd:rgba(193,48,107,0.30);
 
     /* category colours */
-    --cat1:#386fef; --cat1-bg:rgba(56,111,239,0.20);
-    --cat2:#805ee5; --cat2-bg:rgba(128,94,229,0.20);
-    --cat3:#ae6504; --cat3-bg:rgba(174,101,4,0.20);
-    --cat4:#e31974; --cat4-bg:rgba(227,25,116,0.20);
-    --cat5:#038851; --cat5-bg:rgba(3,136,81,0.20);
-    --cat6:#6b7793; --cat6-bg:rgba(107,119,147,0.20);
+    --cat1:#2f62d9; --cat1-bg:rgba(47,98,217,0.16);
+    --cat2:#6a45d4; --cat2-bg:rgba(106,69,212,0.16);
+    --cat3:#a15c00; --cat3-bg:rgba(161,92,0,0.16);
+    --cat4:#c1306b; --cat4-bg:rgba(193,48,107,0.16);
+    --cat5:#10775a; --cat5-bg:rgba(16,119,90,0.16);
+    --cat6:#6b6478; --cat6-bg:rgba(107,100,120,0.16);
 
     /* phase colours */
-    --ph1:#386fef; --ph1-bg:rgba(56,111,239,0.20);  --ph1-brd:rgba(56,111,239,0.4);
-    --ph2:#805ee5; --ph2-bg:rgba(128,94,229,0.20);  --ph2-brd:rgba(128,94,229,0.4);
-    --ph3:#e31974; --ph3-bg:rgba(227,25,116,0.20);  --ph3-brd:rgba(227,25,116,0.4);
+    --ph1:#2f62d9; --ph1-bg:rgba(47,98,217,0.16);  --ph1-brd:rgba(47,98,217,0.34);
+    --ph2:#6a45d4; --ph2-bg:rgba(106,69,212,0.16); --ph2-brd:rgba(106,69,212,0.34);
+    --ph3:#c1306b; --ph3-bg:rgba(193,48,107,0.16); --ph3-brd:rgba(193,48,107,0.34);
 
     /* chip tints */
-    --chip-violet:#805ee5; --chip-violet-bg:rgba(128,94,229,0.12); --chip-violet-brd:rgba(128,94,229,0.4);
-    --chip-blue:#386fef;   --chip-blue-bg:rgba(56,111,239,0.12);   --chip-blue-brd:rgba(56,111,239,0.4);
+    --chip-violet:#6a45d4; --chip-violet-bg:rgba(106,69,212,0.10); --chip-violet-brd:rgba(106,69,212,0.26);
+    --chip-blue:#2f62d9;   --chip-blue-bg:rgba(47,98,217,0.10);    --chip-blue-brd:rgba(47,98,217,0.26);
   }
 
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -170,9 +168,9 @@
   }
   body[data-mode="light"] .bg .glow,body[data-mode="light"] .sheetbg .glow{
     background:
-      radial-gradient(600px 400px at 15% 8%, rgba(77,140,255,0.18), transparent 60%),
-      radial-gradient(700px 500px at 85% 20%, rgba(139,123,255,0.16), transparent 60%),
-      radial-gradient(600px 500px at 50% 100%, rgba(63,240,224,0.14), transparent 60%);
+      radial-gradient(760px 520px at 12% -6%, rgba(255,164,74,0.30), transparent 62%),
+      radial-gradient(680px 520px at 92% 4%, rgba(74,140,240,0.22), transparent 60%),   /* was violet: rgba(150,110,255,0.20) */
+      radial-gradient(900px 620px at 50% 108%, rgba(255,196,130,0.26), transparent 62%);
   }
   .bg .gridlines,.sheetbg .gridlines{
     position:absolute;inset:0;opacity:0.22;
@@ -1244,9 +1242,323 @@
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{transition:none !important;animation:none !important;}
   }
+
+  /* ================= FINANCE / SUBSCRIPTIONS =================
+     The card is the dash tile's recipe, rebuilt here because .tile and its
+     parts live inside @media (min-width:1000px) and don't exist on a phone.
+     It rides on .card for the glass, so both themes are already handled.
+     New names, none of them clashing with anything:
+       .subcard  .subtop  .subttl  .subtally  .sublist
+       .sline  .sdot  .sname  .sval  .subfoot
+     Not .subrow — .eyebrow.subrow already exists, and a modifier belongs
+     to one component.
+     ============================================================ */
+
+  /* a card that is a destination, not a link: no lift, no pointer */
+  .subcard{cursor:default;padding:18px;margin-bottom:52px;}
+  .subcard:hover{
+    transform:none;
+    border-color:var(--card-brd);
+    box-shadow:var(--card-glow);
+  }
+
+  .subtop{display:flex;align-items:center;gap:10px;margin-bottom:15px;}
+  .subttl{font-family:var(--font-head);font-size:16px;font-weight:600;color:var(--ink);}
+  .subtally{
+    margin-left:auto;
+    font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--ink-faint);
+  }
+
+  .sublist{display:flex;flex-direction:column;}
+
+  /* one subscription */
+  .sline{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:11px 2px;cursor:pointer;
+    background:transparent;border:none;border-bottom:1px solid var(--line);
+    font-family:var(--font-body);font-size:13.5px;color:var(--ink-dim);
+    transition:color .2s ease;
+  }
+  .sline:hover{color:var(--accent-ink);}
+  .sline:last-child{border-bottom:none;}
+  /* quiet by default; pink only when there is something to do about it */
+  .sdot{
+    width:7px;height:7px;border-radius:50%;flex-shrink:0;
+    background:var(--ink-faint);
+  }
+  .sdot.due{background:var(--pink);}
+  .sname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sval{
+    margin-left:auto;flex-shrink:0;
+    font-family:var(--font-mono);font-size:12px;color:var(--ink);white-space:nowrap;
+  }
+
+  /* the sum, on the bottom edge — the tile's foot */
+  .subfoot{
+    margin-top:14px;padding-top:11px;border-top:1px solid var(--line);
+    font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
+    text-transform:uppercase;color:var(--ink-faint);
+    display:flex;align-items:baseline;gap:10px;
+  }
+  .subfoot .sum{margin-left:auto;font-size:13px;letter-spacing:.5px;color:var(--ink);}
+
+  /* inside the sheet: a group of detail rows keeps its distance from the last */
+  .sgroup{margin-top:22px;}
+  .sgroup:first-child{margin-top:0;}
+
+  /* This sheet is a short list of facts, not a page of tasks, so its rows sit
+     closer than the budget rows they borrow their shape from.
+     Scoped to #suWrap — no other sheet in the app changes. */
+  #suWrap .brow{padding:9px 2px;}
+
+  /* a labelled field, for a form with four dates in it that would otherwise
+     be four identical boxes. The label is the micro label from DESIGN.md. */
+  #suWrap .ffield{display:flex;flex-direction:column;gap:6px;}
+  #suWrap .formrow .ffield{flex:1;min-width:0;}
+  /* Cancel by is one value with a coloured tail. The date reads as ordinary
+     text; only the countdown is coloured — blue while there is still time,
+     pink once the date has gone. Nothing else in the row changes. */
+  #suWrap .cd.soon{color:var(--blue);}
+  #suWrap .cd.gone{color:var(--pink);}
+
+  #suWrap .flab{
+    font-family:var(--font-mono);font-size:9.5px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--ink-faint);padding-left:2px;
+  }
+
+  @media (min-width:1000px){
+    /* sized to the longest name that will ever sit in it */
+    #page-finance .subcard{max-width:430px;}
+    #suWrap .sheet{max-width:430px;}
+  }
+  /* ================= end FINANCE / SUBSCRIPTIONS ================= */
+
+  /* =================================================================
+     LIGHT · Daylight — component overrides.
+     Everything here is scoped to body[data-mode="light"]; dark is
+     untouched. Three pieces make the theme: this block, the light
+     variable block, and the light .bg .glow rule.
+     ================================================================= */
+  body[data-mode="light"]{
+    background:radial-gradient(1200px 720px at 50% -12%, #fffefb, transparent 70%), var(--bg);
+  }
+  /* the grid stays in daylight, but drawn in warm ink and faded further out,
+     so it reads as paper texture rather than as a spreadsheet */
+  body[data-mode="light"] .bg .gridlines,
+  body[data-mode="light"] .sheetbg .gridlines{
+    opacity:0.5;
+    background-image:
+      linear-gradient(rgba(90,62,34,0.09) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(90,62,34,0.09) 1px,transparent 1px);
+  }
+  @supports (mask-image:radial-gradient(#000,transparent)) or (-webkit-mask-image:radial-gradient(#000,transparent)){
+    body[data-mode="light"] .bg .gridlines,
+    body[data-mode="light"] .sheetbg .gridlines{
+      opacity:0.75;
+      -webkit-mask-image:radial-gradient(circle at 50% 26%,#000 22%,transparent 72%);
+      mask-image:radial-gradient(circle at 50% 26%,#000 22%,transparent 72%);
+    }
+  }
+
+  /* glass: more blur, more saturation, no coloured edge — depth is shadow */
+  body[data-mode="light"] .card,
+  body[data-mode="light"] .tile,
+  body[data-mode="light"] .briefbtn{
+    border-radius:22px;border-color:var(--card-brd);box-shadow:var(--card-glow);
+  }
+  body[data-mode="light"] .cards[class*="sec-"] .card{border-color:var(--card-brd);}
+  body[data-mode="light"] .card.quiet{
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 2px rgba(38,28,20,0.04);
+  }
+  body[data-mode="light"] .card:hover,
+  body[data-mode="light"] .tile:hover,
+  body[data-mode="light"] .briefbtn:hover,
+  body[data-mode="light"] .cards[class*="sec-"] .card:hover{
+    border-color:var(--hover-brd);box-shadow:var(--hover-sh);
+  }
+  body[data-mode="light"] .task{
+    border-radius:18px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 2px rgba(38,28,20,0.04), 0 8px 20px -14px rgba(90,58,24,0.30);
+  }
+  body[data-mode="light"] .navin{
+    background:#ffffff;
+    box-shadow:0 1px 2px rgba(38,28,20,0.04), 0 12px 30px -14px rgba(90,58,24,0.28);
+  }
+  body[data-mode="light"] .field,
+  body[data-mode="light"] .btn,
+  body[data-mode="light"] .ghost,
+  body[data-mode="light"] .rbtn,
+  body[data-mode="light"] .codeface,
+  body[data-mode="light"] .swact{border-radius:18px;}
+
+  /* halos are a night effect; by day the same shapes cast a warm shadow */
+  body[data-mode="light"] .bdot{box-shadow:0 2px 8px rgba(160,75,0,0.28);}
+  body[data-mode="light"] .briefbtn .borb{box-shadow:0 2px 8px rgba(160,75,0,0.25);}
+  body[data-mode="light"] .chip .dot,
+  body[data-mode="light"] .pick .dot,
+  body[data-mode="light"] .phdot,
+  body[data-mode="light"] .brdot,
+  body[data-mode="light"] .tdot{box-shadow:none;}
+  body[data-mode="light"] .now::before,
+  body[data-mode="light"] .tltoday::before{box-shadow:0 0 0 3px rgba(160,75,0,0.14);}
+  body[data-mode="light"] .slot.done::before{box-shadow:0 0 0 3px rgba(160,75,0,0.12);}
+
+  /* the faint labels are the smallest type in the app — they can be quiet by
+     colour, never by opacity on top of it */
+  body[data-mode="light"] .free span{opacity:1;color:#736c7f;}
+
+  /* strips get soft ends, like the panels they sit among */
+  body[data-mode="light"] .pstrip,
+  body[data-mode="light"] .cbar{border-radius:8px;overflow:hidden;}
+  body[data-mode="light"] .pseg:hover,
+  body[data-mode="light"] .cseg:hover{box-shadow:inset 0 0 0 1px var(--pc,var(--cc));}
+  body[data-mode="light"] .pseg.on{box-shadow:inset 0 0 0 2px var(--pc);}
+
+  /* the same blooms inside a 430px sheet become a pastel wash — the sheet
+     gets its own, much quieter light, and it holds still */
+  body[data-mode="light"] .sheetbg .glow{
+    background:
+      radial-gradient(520px 340px at 12% -12%, rgba(255,164,74,0.14), transparent 62%),
+      radial-gradient(460px 340px at 96% 8%, rgba(74,140,240,0.10), transparent 60%);   /* was violet: rgba(150,110,255,0.09) */
+    animation:none;
+  }
+  body[data-mode="light"] .sheet{
+    background:rgba(255,252,248,0.90);
+    -webkit-backdrop-filter:blur(28px) saturate(1.4);backdrop-filter:blur(28px) saturate(1.4);
+  }
+  body[data-mode="light"] .swact:hover,
+  body[data-mode="light"] .btn.primary:hover,
+  body[data-mode="light"] .rbtn:hover,
+  body[data-mode="light"] .addbtn:hover{box-shadow:0 6px 16px -8px rgba(160,75,0,0.45);}
+  /* the percentage reads as part of its bar, so it takes the bar's blue */
+  body[data-mode="light"] .ppct{color:#2f62d9;}
+  /* phone: the selected tab picks up the rail's blue, not the page accent */
+  @media (max-width:999px){
+    body[data-mode="light"] .nav button.on{
+      background:rgba(47,98,217,0.10);color:#2f62d9;border-color:rgba(47,98,217,0.30);
+    }
+  }
+  @media (min-width:1000px){
+    body[data-mode="light"] .nav{
+      background:linear-gradient(168deg,#b8cdef 0%,#c5d6f1 46%,#d8dcea 78%,#e9e2d8 100%);
+      border-right-color:rgba(38,28,20,0.10);
+    }
+    /* on the rail the nav is a white card again — the desktop rule above
+       flattens it, which left square corners around rounded highlights */
+    body[data-mode="light"] .navin{
+      background:#ffffff;padding:6px;border-radius:18px;
+      border:1px solid rgba(38,28,20,0.07);
+      box-shadow:0 1px 2px rgba(38,28,20,0.05), 0 14px 30px -16px rgba(40,60,110,0.35);
+    }
+    body[data-mode="light"] .nav button{border-radius:13px;}
+    /* the same graph paper as the page, drawn in blue ink on the rail */
+    body[data-mode="light"] .nav::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background-image:
+        linear-gradient(rgba(47,98,217,0.13) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(47,98,217,0.13) 1px,transparent 1px);
+      background-size:26px 26px;
+      -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 96%);
+      mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 96%);
+    }
+    body[data-mode="light"] .railmark,
+    body[data-mode="light"] .navin{position:relative;z-index:1;}
+    /* the rail's selected page matches the phone's: blue, not the page accent */
+    body[data-mode="light"] .nav button.on{
+      background:rgba(47,98,217,0.10);color:#2f62d9;
+    }
+    body[data-mode="light"] .nav button.on::before{
+      background:#2f62d9;box-shadow:0 0 0 3px rgba(47,98,217,0.14);
+    }
+  }
+  /* ================= end LIGHT · Daylight ================= */
+
+  /* =================================================================
+     DARK · "Fluid night" — a VARIANT, not a replacement.
+     Everything here needs body[data-mode="dark"][data-dark="fluid"].
+     Remove the data-dark attribute and the original dark theme is back,
+     untouched. Delete this whole block to remove the variant entirely.
+
+     Two changes from the original:
+     1. Depth comes from shadow and a lit top edge, not from a cyan border
+        on every card. The old theme glowed on everything, so nothing stood
+        out; here the accent is reserved for what is actually running —
+        progress, the now-line, the live counts.
+     2. One light source, warm at the floor and cool overhead, drifting —
+        the same lamp the light theme uses, seen at night.
+     ================================================================= */
+  body[data-mode="dark"][data-dark="fluid"]{
+    --bg:#0d1120;   /* the original dark background. Fluid night's own was #0a0d17 */
+    --panel:rgba(32,38,58,0.55);
+    --panel-brd:rgba(120,160,255,0.18);
+    --ink:#e3e9f8; --ink-dim:#a3aecd; --ink-faint:#707c9f;
+    --line:rgba(120,160,255,0.26);
+
+    --accent-ink:#4fe6d6;
+    --nav-on-bg:rgba(79,230,214,0.10);
+    --nav-on-brd:rgba(79,230,214,0.24);
+    --card-brd:rgba(150,180,255,0.10);
+    --card-glow:inset 0 1px 0 rgba(180,210,255,0.09), 0 2px 4px rgba(0,0,0,0.40), 0 20px 44px -20px rgba(0,0,0,0.80);
+    --hover-brd:rgba(79,230,214,0.32);
+    --hover-sh:inset 0 1px 0 rgba(180,210,255,0.16), 0 2px 6px rgba(0,0,0,0.45), 0 28px 56px -22px rgba(0,0,0,0.90);
+    --check-off-brd:rgba(150,180,255,0.28);
+    --check-done-bg:#4fe6d6; --check-done-tick:#05070d;
+    --check-done-glow:0 0 0 4px rgba(79,230,214,0.12);
+    --bar-track:rgba(150,180,255,0.10);
+    --bar-fill:linear-gradient(90deg,#0f8f7f,#1eb99f 52%,#2fcfb6);
+    --bar-glow:none;
+    --ghost-brd:rgba(150,180,255,0.18);
+    --scrim:rgba(5,8,16,0.6);
+    --toast-bg:rgba(18,24,40,0.94); --toast-brd:rgba(150,180,255,0.14);
+    --toast-sh:0 24px 56px -20px rgba(0,0,0,0.9);
+  }
+
+  /* background: identical to the original dark theme — the Fluid night lamp
+     is off. (Its own blooms were: blue 88%/-8%, warm amber 6%/106%, teal wash.) */
+
+  /* glass, lit from above — no coloured edge on anything at rest */
+  body[data-mode="dark"][data-dark="fluid"] .card,
+  body[data-mode="dark"][data-dark="fluid"] .tile,
+  body[data-mode="dark"][data-dark="fluid"] .briefbtn{
+    border-radius:22px;border-color:var(--card-brd);box-shadow:var(--card-glow);
+  }
+  body[data-mode="dark"][data-dark="fluid"] .cards[class*="sec-"] .card{border-color:var(--card-brd);}
+  body[data-mode="dark"][data-dark="fluid"] .card.quiet{
+    box-shadow:inset 0 1px 0 rgba(180,210,255,0.06), 0 2px 4px rgba(0,0,0,0.35);
+  }
+  body[data-mode="dark"][data-dark="fluid"] .card:hover,
+  body[data-mode="dark"][data-dark="fluid"] .tile:hover,
+  body[data-mode="dark"][data-dark="fluid"] .briefbtn:hover,
+  body[data-mode="dark"][data-dark="fluid"] .cards[class*="sec-"] .card:hover{
+    border-color:var(--hover-brd);box-shadow:var(--hover-sh);
+  }
+  body[data-mode="dark"][data-dark="fluid"] .task{
+    border-radius:18px;
+    box-shadow:inset 0 1px 0 rgba(180,210,255,0.07), 0 2px 4px rgba(0,0,0,0.35), 0 14px 30px -18px rgba(0,0,0,0.75);
+  }
+  body[data-mode="dark"][data-dark="fluid"] .field,
+  body[data-mode="dark"][data-dark="fluid"] .btn,
+  body[data-mode="dark"][data-dark="fluid"] .ghost,
+  body[data-mode="dark"][data-dark="fluid"] .rbtn,
+  body[data-mode="dark"][data-dark="fluid"] .codeface,
+  body[data-mode="dark"][data-dark="fluid"] .swact{border-radius:18px;}
+
+  /* the accent is spent on what is running, not on every dot in the app */
+  body[data-mode="dark"][data-dark="fluid"] .chip .dot,
+  body[data-mode="dark"][data-dark="fluid"] .pick .dot,
+  body[data-mode="dark"][data-dark="fluid"] .phdot,
+  body[data-mode="dark"][data-dark="fluid"] .brdot,
+  body[data-mode="dark"][data-dark="fluid"] .tdot{box-shadow:none;}
+  body[data-mode="dark"][data-dark="fluid"] .bdot{box-shadow:0 0 22px rgba(79,230,214,0.35);}
+  body[data-mode="dark"][data-dark="fluid"] .now::before,
+  body[data-mode="dark"][data-dark="fluid"] .tltoday::before{box-shadow:0 0 12px var(--accent-ink), 0 0 0 3px rgba(79,230,214,0.12);}
+  body[data-mode="dark"][data-dark="fluid"] .pstrip,
+  body[data-mode="dark"][data-dark="fluid"] .cbar{border-radius:8px;overflow:hidden;}
+  /* ================= end DARK · Fluid night ================= */
 </style>
 </head>
-<body data-mode="dark">
+<body data-mode="light" data-dark="fluid">
 
 <div class="bg" aria-hidden="true"><div class="glow"></div><div class="gridlines"></div></div>
 
@@ -1257,7 +1569,7 @@
       <button data-page="home" class="on" aria-current="page" data-icon="dash">Dash</button>
       <button data-page="projects" data-icon="projects">Projects</button>
       <button data-icon="goals">Goals</button>
-      <button data-icon="finance">Finance</button>
+      <button data-page="finance" data-icon="finance">Finance</button>
       <button data-icon="fitness">Fitness</button>
       <button data-icon="health">Health</button>
       <button data-icon="spirit">Spirit</button>
@@ -1312,7 +1624,7 @@
       <div class="tfoot">Soon</div>
     </button>
 
-    <button class="tile" data-soon="Finance">
+    <button class="tile" data-page="finance">
       <div class="tiletop"><span class="tlabel">Finance</span><span class="tcount">Jul</span></div>
       <div class="tbody">
         <div class="tline">Net this month<span class="tval">+€2 140</span></div>
@@ -1686,6 +1998,39 @@
 
 </main>
 
+<!-- ================= FINANCE ================= -->
+<main class="phone" id="page-finance" hidden>
+
+  <div class="top">
+    <div class="brand"><span class="bdot"></span><svg class="wm" viewBox="0 16.30 313.80 108.60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Итер"><path fill="currentColor" d="M15.4 100.0Q13.200000000000001 100.0 11.600000000000001 98.5Q10.0 97.0 10.0 94.8V27.099999999999994Q10.0 24.799999999999997 11.600000000000001 23.349999999999994Q13.200000000000001 21.89999999999999 15.4 21.89999999999999Q17.7 21.89999999999999 19.05 23.349999999999994Q20.400000000000002 24.799999999999997 20.400000000000002 27.099999999999994V83.8L68.4 23.799999999999997Q70.0 21.89999999999999 72.4 21.89999999999999Q74.7 21.89999999999999 76.15 23.349999999999994Q77.60000000000001 24.799999999999997 77.60000000000001 27.099999999999994V94.8Q77.60000000000001 97.0 76.15 98.5Q74.7 100.0 72.4 100.0Q70.2 100.0 68.7 98.5Q67.2 97.0 67.2 94.8V38.199999999999996L19.400000000000002 98.2Q18.7 99.0 17.6 99.5Q16.5 100.0 15.4 100.0Z M168.40000000000003 100.1Q166.20000000000002 100.1 164.75 98.65Q163.3 97.2 163.3 95.0V66.4Q163.3 60.099999999999994 160.20000000000002 57.05Q157.10000000000002 54.0 152.10000000000002 54.0Q146.9 54.0 143.55 57.599999999999994Q140.20000000000002 61.199999999999996 140.20000000000002 66.8H131.9Q131.9 60.3 134.7 55.349999999999994Q137.5 50.4 142.55 47.599999999999994Q147.60000000000002 44.8 154.10000000000002 44.8Q159.8 44.8 164.20000000000002 47.3Q168.60000000000002 49.8 171.05 54.65Q173.5 59.5 173.5 66.4V95.0Q173.5 97.2 172.10000000000002 98.65Q170.70000000000002 100.1 168.40000000000003 100.1ZM101.70000000000002 100.1Q99.50000000000001 100.1 98.05000000000001 98.65Q96.60000000000001 97.2 96.60000000000001 95.0V50.5Q96.60000000000001 48.199999999999996 98.05000000000001 46.8Q99.50000000000001 45.4 101.70000000000002 45.4Q104.00000000000001 45.4 105.4 46.8Q106.80000000000001 48.199999999999996 106.80000000000001 50.5V95.0Q106.80000000000001 97.2 105.4 98.65Q104.00000000000001 100.1 101.70000000000002 100.1ZM135.10000000000002 100.1Q132.9 100.1 131.45 98.65Q130.0 97.2 130.0 95.0V66.4Q130.0 60.099999999999994 126.9 57.05Q123.80000000000001 54.0 118.80000000000001 54.0Q113.60000000000001 54.0 110.20000000000002 57.599999999999994Q106.80000000000001 61.199999999999996 106.80000000000001 66.8H100.50000000000001Q100.50000000000001 60.3 103.10000000000002 55.349999999999994Q105.70000000000002 50.4 110.30000000000001 47.599999999999994Q114.9 44.8 120.80000000000001 44.8Q126.50000000000001 44.8 130.9 47.3Q135.3 49.8 137.75 54.65Q140.20000000000002 59.5 140.20000000000002 66.4V95.0Q140.20000000000002 97.2 138.8 98.65Q137.4 100.1 135.10000000000002 100.1Z M216.10000000000002 100.4Q207.80000000000004 100.4 201.35000000000002 96.85Q194.90000000000003 93.3 191.25000000000003 87.05Q187.60000000000002 80.8 187.60000000000002 72.7Q187.60000000000002 64.5 191.05 58.25Q194.50000000000003 52.0 200.60000000000002 48.45Q206.70000000000005 44.9 214.60000000000002 44.9Q222.40000000000003 44.9 228.00000000000003 48.349999999999994Q233.60000000000002 51.8 236.55 57.849999999999994Q239.50000000000003 63.9 239.50000000000003 71.8Q239.50000000000003 73.7 238.20000000000005 74.95Q236.90000000000003 76.2 234.90000000000003 76.2H194.60000000000002V68.2H234.60000000000002L230.50000000000003 71.0Q230.40000000000003 66.0 228.50000000000003 62.05Q226.60000000000002 58.099999999999994 223.10000000000002 55.8Q219.60000000000002 53.5 214.60000000000002 53.5Q208.90000000000003 53.5 204.85000000000002 56.0Q200.80000000000004 58.5 198.70000000000005 62.849999999999994Q196.60000000000002 67.19999999999999 196.60000000000002 72.7Q196.60000000000002 78.2 199.10000000000002 82.5Q201.60000000000002 86.8 206.00000000000003 89.3Q210.40000000000003 91.8 216.10000000000002 91.8Q219.20000000000005 91.8 222.45000000000005 90.65Q225.70000000000005 89.5 227.70000000000005 88.0Q229.20000000000005 86.9 230.95000000000005 86.85Q232.70000000000005 86.8 234.00000000000003 87.9Q235.70000000000005 89.4 235.80000000000004 91.2Q235.90000000000003 93.0 234.20000000000005 94.3Q230.80000000000004 97.0 225.75000000000006 98.7Q220.70000000000005 100.4 216.10000000000002 100.4Z M257.6 123.4Q255.40000000000003 123.4 253.95000000000005 121.95Q252.50000000000003 120.5 252.50000000000003 118.3V72.7Q252.59915966386558 64.81490909090908 256.218487394958 58.49672727272727Q259.83781512605043 52.17854545454546 266.0352941176471 48.53927272727273Q272.23277310924374 44.9 279.9672268907563 44.9Q287.90000000000003 44.9 294.1 48.55Q300.3 52.199999999999996 303.95000000000005 58.4778947368421Q307.6 64.75578947368422 307.6 72.72771929824562Q307.6 80.6 304.2340740740741 86.86834170854272Q300.8681481481482 93.13668341708542 295.08444444444444 96.76834170854272Q289.30074074074076 100.4 282.0 100.4Q276.1 100.4 271.15000000000003 97.95Q266.20000000000005 95.5 262.70000000000005 91.3V118.3Q262.70000000000005 120.5 261.29078947368424 121.95Q259.88157894736844 123.4 257.6 123.4ZM279.9942084942085 91.4Q285.1 91.4 289.1 88.95Q293.1 86.5 295.45000000000005 82.23831775700934Q297.8 77.97663551401868 297.8 72.68317757009346Q297.8 67.3 295.45000000000005 63.05Q293.1 58.8 289.0777777777778 56.349999999999994Q285.0555555555556 53.9 279.9840579710145 53.9Q275.0 53.9 270.9430555555556 56.37294776119403Q266.8861111111111 58.845895522388055 264.59305555555557 63.07238805970148Q262.3 67.29888059701491 262.3 72.69440298507463Q262.3 78.0 264.5888030888031 82.2718120805369Q266.8776061776062 86.54362416107382 270.92702702702707 88.97181208053692Q274.9764478764479 91.4 279.9942084942085 91.4Z M108.79 17.80 H161.31 A4.50 4.50 0 0 1 161.31 26.80 H108.79 A4.50 4.50 0 0 1 108.79 17.80 Z"/></svg></div>
+    <div class="topright">
+      <span class="meta">Mon 20 Jul</span>
+      <button class="mode" aria-label="Switch between light and dark mode">
+        <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="headrow">
+    <h1>Finance</h1>
+  </div>
+
+  <div class="card subcard">
+    <div class="subtop">
+      <span class="subttl">Subscriptions</span>
+      <span class="subtally" id="suTally">0 total</span>
+      <button class="addbtn" id="suAdd" aria-label="New subscription">+</button>
+    </div>
+    <div class="sublist" id="suList"></div>
+    <div class="subfoot" id="suFoot"></div>
+  </div>
+
+</main>
+<!-- ================= end FINANCE ================= -->
+
+
 <!-- ================= ONE PROJECT — Zeleni Pojas (new this session) ================= -->
 <main class="phone" id="page-project" hidden>
 
@@ -1906,6 +2251,17 @@
   </div>
 </div>
 
+<!-- ===== subscription detail ===== -->
+<div class="sheetwrap" id="suWrap">
+  <div class="scrim" id="suScrim"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Subscription">
+    <div class="sheetbg" aria-hidden="true"><div class="glow"></div><div class="gridlines"></div></div>
+    <div class="sheetgrab" id="suGrab"><div class="handle"></div></div>
+    <div class="sheethead" id="suHead"></div>
+    <div class="sheetbody" id="suBody"></div>
+  </div>
+</div>
+
 <div class="sheetwrap" id="inWrap">
   <div class="scrim" id="inScrim"></div>
   <div class="sheet" role="dialog" aria-modal="true" aria-label="New project">
@@ -1969,6 +2325,9 @@
   // light/dark switch — one per page, so bind them all
   document.querySelectorAll('.mode').forEach(btn => {
     btn.addEventListener('click', () => {
+      /* data-dark="fluid" is set on <body> and never removed — it is what
+         selects the new dark theme. The original dark rules are still in the
+         stylesheet underneath it, unused. */
       document.body.dataset.mode = document.body.dataset.mode === 'dark' ? 'light' : 'dark';
     });
   });
@@ -1988,7 +2347,8 @@
   const pages = {
     home: document.getElementById('page-home'),
     projects: document.getElementById('page-projects'),
-    project: document.getElementById('page-project')
+    project: document.getElementById('page-project'),
+    finance: document.getElementById('page-finance')
   };
   const navBtns = document.querySelectorAll('.nav button');
   // where you've been, so back means something
@@ -4657,6 +5017,339 @@
   useProject(ZELENI);
   window.addEventListener('resize', drawCurve);
 
+
+
+  /* ==================================================================
+     FINANCE · SUBSCRIPTIONS
+     Fake data, in memory, nothing saved — same as everywhere else.
+
+     Two decisions worth remembering:
+     - The sum is what actually gets charged THIS month, so a yearly
+       subscription contributes nothing until the month it renews in, and
+       then contributes all of it. That is what the budget will want.
+     - The pink dot is not "renews soon" — every monthly sub renews soon.
+       It is "you must act before a deadline that is not the renewal
+       date", which is the case that actually costs money.
+     ================================================================== */
+
+  /* the app's fake today is Mon 20 Jul */
+  const SU_TODAY = new Date(2026, 6, 20);
+  /* a cancel deadline this close, or already gone, is worth a pink dot */
+  const SU_WARN_DAYS = 14;
+
+  const SUBS = [
+    { name:'iCloud+', plan:'200 GB', amt:29, cyc:'m',
+      start:'2019-06-02', next:'2026-07-23', auto:true, cancel:'2026-07-22',
+      login:'dejan@icloud.com', card:'Visa ···· 4417',
+      how:'iPhone → Settings → your name → iCloud → Manage Storage → Change Storage Plan → Downgrade.' },
+
+    { name:'Spotify', plan:'Premium Duo', amt:149, cyc:'m',
+      start:'2021-09-04', next:'2026-07-25', auto:true, cancel:'2026-07-24',
+      login:'dejan@gmail.com', card:'Mastercard ···· 8802',
+      how:'spotify.com → Account → Available plans → Cancel Premium. Plays on until the paid period ends.' },
+
+    { name:'Claude', plan:'Pro', amt:219, cyc:'m',
+      start:'2026-02-09', next:'2026-07-28', auto:true, cancel:'2026-07-27',
+      login:'dejan@gmail.com', card:'Visa ···· 4417',
+      how:'claude.ai → Settings → Billing → Cancel plan.' },
+
+    { name:'Netflix', plan:'Standard', amt:139, cyc:'m',
+      start:'2024-03-12', next:'2026-08-02', auto:true, cancel:'2026-08-01',
+      login:'dejan@gmail.com', card:'Visa ···· 4417',
+      how:'Account → Membership → Cancel Membership. Keeps working until 2 Aug.' },
+
+    { name:'Adobe', plan:'Creative Cloud, all apps', amt:659, cyc:'m',
+      start:'2025-01-18', next:'2026-08-04', auto:true, cancel:'2026-07-26',
+      login:'dejan.bulatic@outlook.com', card:'Visa ···· 4417',
+      how:'Account → Plans → Manage plan → Cancel. This is a yearly plan paid monthly — cancelling before 18 Jan costs half of what is left on it.' },
+
+    { name:'SATS', plan:'Gold, all clubs', amt:549, cyc:'m',
+      start:'2024-11-01', next:'2026-08-06', auto:true, cancel:'2026-07-06',
+      login:'dejan@gmail.com', card:'Mastercard ···· 8802',
+      how:'One full month of notice, in the app under Membership. Miss the date and the next month is charged anyway.' },
+
+    { name:'Figma', plan:'Professional', amt:155, cyc:'m',
+      start:'2025-04-22', next:'2026-08-11', auto:true, cancel:'2026-08-10',
+      login:'dejan.bulatic@outlook.com', card:'Visa ···· 4417',
+      how:'Admin → Billing → Cancel plan.' },
+
+    { name:'Microsoft 365', plan:'Family', amt:1090, cyc:'y',
+      start:'2022-09-21', next:'2026-09-21', auto:true, cancel:'2026-09-20',
+      login:'dejan.bulatic@outlook.com', card:'Mastercard ···· 8802',
+      how:'account.microsoft.com → Services & subscriptions → Manage → Turn off recurring billing.' },
+
+    { name:'primalhybrid79.com', plan:'Domain, GoDaddy', amt:189, cyc:'y',
+      start:'2021-03-14', next:'2027-03-14', auto:true, cancel:'2027-03-13',
+      login:'dejan@gmail.com', card:'Visa ···· 4417',
+      how:'GoDaddy → My Products → Auto-renew off. Careful — the landing page and Cosmo both live on this domain.' }
+  ];
+
+  const SU_MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const suD    = s => new Date(s + 'T00:00:00');
+  const suKr   = n => Math.round(n).toLocaleString('sv-SE') + ' kr';
+  const suDays = s => Math.round((suD(s) - SU_TODAY) / 86400000);
+  const suDate = s => {
+    if (!s) return '—';
+    const d = suD(s);
+    return d.getDate() + ' ' + SU_MON[d.getMonth()] +
+           (d.getFullYear() === SU_TODAY.getFullYear() ? '' : ' ' + d.getFullYear());
+  };
+
+  /* A deadline only matters when it is NOT simply the day before the charge.
+     Most things you can cancel right up to the renewal, so their deadline is
+     never news. The ones that bite have a notice period — a gym wanting a
+     month, a yearly plan paid monthly — and those are the pink ones. */
+  function suUrgent(s){
+    if (!s.auto || !s.cancel || !s.next) return false;
+    const notice = Math.round((suD(s.next) - suD(s.cancel)) / 86400000);
+    if (notice < 2) return false;
+    return suDays(s.cancel) <= SU_WARN_DAYS;
+  }
+
+  /* what leaves the account in the month we are standing in */
+  function suDueThisMonth(){
+    return SUBS.reduce((n, s) => {
+      if (s.cyc === 'm') return n + s.amt;
+      const d = suD(s.next);
+      const same = d.getFullYear() === SU_TODAY.getFullYear() && d.getMonth() === SU_TODAY.getMonth();
+      return same ? n + s.amt : n;
+    }, 0);
+  }
+
+  function drawSubs(){
+    const list = [...SUBS].sort((a, b) => a.next < b.next ? -1 : 1);
+
+    document.getElementById('suTally').textContent = list.length + ' total';
+
+    document.getElementById('suList').innerHTML = list.map(s =>
+      '<button class="sline" data-su="' + SUBS.indexOf(s) + '">' +
+        '<span class="sdot' + (suUrgent(s) ? ' due' : '') + '"></span>' +
+        '<span class="sname">' + esc(s.name) + ' · ' + esc(s.plan) + '</span>' +
+        '<span class="sval">' + suKr(s.amt) + ' / ' + s.cyc + '</span>' +
+      '</button>'
+    ).join('');
+
+    document.getElementById('suFoot').innerHTML =
+      '<span>Due in ' + SU_MON[SU_TODAY.getMonth()] + '</span>' +
+      '<span class="sum">' + suKr(suDueThisMonth()) + '</span>';
+  }
+  drawSubs();
+
+  /* ---- the detail sheet ---- */
+  const suWrap  = document.getElementById('suWrap');
+  const suSheet = suWrap.querySelector('.sheet');
+  const suHead  = document.getElementById('suHead');
+  const suBody  = document.getElementById('suBody');
+  let suSel  = 0;
+  let suMode = 'view';          // view · edit · new
+  let suDraft = null;           // the one being typed, before it joins the list
+
+  const suBlank = () => ({ name:'', plan:'', amt:0, cyc:'m', start:'', next:'',
+                           auto:true, cancel:'', login:'', card:'', how:'' });
+
+  /* label left, value right — the budget row, sitting still */
+  function suRow(label, value, pink){
+    return '<div class="brow flat">' +
+             '<span class="brname">' + label + '</span>' +
+             '<span class="bramt' + (pink ? ' neg' : '') + '">' + value + '</span>' +
+           '</div>';
+  }
+
+  /* a field with its own name above it */
+  function suField(label, inner){
+    return '<label class="ffield"><span class="flab">' + label + '</span>' + inner + '</label>';
+  }
+
+  function suForm(s){
+    const opt = (v, now, txt) =>
+      '<option value="' + v + '"' + (v === now ? ' selected' : '') + '>' + txt + '</option>';
+    return '<div class="editform">' +
+      suField('Name', '<input class="field sfname" type="text" maxlength="40" value="' + esc(s.name) + '" placeholder="Netflix">') +
+      suField('Plan', '<input class="field sfplan" type="text" maxlength="40" value="' + esc(s.plan) + '" placeholder="Standard">') +
+      '<div class="formrow">' +
+        suField('Costs', '<input class="field sfamt" type="number" min="0" step="1" inputmode="decimal" value="' + (s.amt || '') + '" placeholder="139">') +
+        suField('Every', '<select class="field sfcyc">' + opt('m', s.cyc, 'Month') + opt('y', s.cyc, 'Year') + '</select>') +
+      '</div>' +
+      '<div class="formrow">' +
+        suField('Started', '<input class="field sfstart" type="date" value="' + s.start + '">') +
+        suField('Next charge', '<input class="field sfnext" type="date" value="' + s.next + '">') +
+      '</div>' +
+      '<div class="formrow">' +
+        suField('Auto-renews', '<select class="field sfauto">' + opt('yes', s.auto ? 'yes' : 'no', 'Yes') + opt('no', s.auto ? 'yes' : 'no', 'No') + '</select>') +
+        suField('Cancel by', '<input class="field sfdeadline" type="date" value="' + s.cancel + '">') +
+      '</div>' +
+      suField('Signed in as', '<input class="field sflogin" type="text" maxlength="60" value="' + esc(s.login) + '" placeholder="dejan@gmail.com">') +
+      suField('Paid with', '<input class="field sfcard" type="text" maxlength="40" value="' + esc(s.card) + '" placeholder="Visa ···· 4417">') +
+      suField('How to cancel', '<textarea class="field area sfhow" maxlength="600" placeholder="Account → Membership → Cancel">' + esc(s.how) + '</textarea>') +
+      '<div class="formrow">' +
+        '<button class="btn primary sfsave">Save</button>' +
+        (suMode === 'edit' ? '<button class="btn danger sfdel">Delete</button>' : '') +
+        '<button class="btn plain sfcancel">Cancel</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  /* read the form back out */
+  function suRead(){
+    const q = c => suBody.querySelector(c);
+    return {
+      name:  q('.sfname').value.trim(),
+      plan:  q('.sfplan').value.trim(),
+      amt:   Math.max(0, parseFloat(q('.sfamt').value) || 0),
+      cyc:   q('.sfcyc').value,
+      start: q('.sfstart').value,
+      next:  q('.sfnext').value,
+      auto:  q('.sfauto').value === 'yes',
+      cancel:q('.sfdeadline').value,
+      login: q('.sflogin').value.trim(),
+      card:  q('.sfcard').value.trim(),
+      how:   q('.sfhow').value.trim()
+    };
+  }
+
+  function drawSub(){
+    const s = suMode === 'new' ? suDraft : SUBS[suSel];
+    if (!s) return;
+
+    suHead.innerHTML = '<span class="sheettitle">' +
+      (suMode === 'new' ? 'New subscription' : esc(s.name)) + '</span>' +
+      '<button class="sheetclose" aria-label="Close">' + cross + '</button>';
+
+    if (suMode !== 'view'){ suBody.innerHTML = suForm(s); return; }
+
+    const left = s.cancel ? suDays(s.cancel) : null;
+    /* today counts as gone — it is the last day, not a day in hand */
+    const ahead = left > 0;
+    const gone  = left === null ? ''
+                : left < 0   ? Math.abs(left) + (left === -1 ? ' day ago' : ' days ago')
+                : left === 0 ? 'today'
+                : 'in ' + left + (left === 1 ? ' day' : ' days');
+    const when  = left === null ? '—'
+                : suDate(s.cancel) + ' · ' +
+                  '<span class="cd ' + (ahead ? 'soon' : 'gone') + '">' + gone + '</span>';
+
+    suBody.innerHTML =
+      '<div class="sgroup">' +
+        '<div class="eyebrow">Money<span class="line"></span></div>' +
+        suRow('Plan',    esc(s.plan)) +
+        suRow('Costs',   suKr(s.amt) + (s.cyc === 'm' ? ' a month' : ' a year')) +
+        suRow('Paid with', esc(s.card)) +
+      '</div>' +
+
+      '<div class="sgroup">' +
+        '<div class="eyebrow">Dates<span class="line"></span></div>' +
+        suRow('Started',     suDate(s.start)) +
+        suRow('Next charge', suDate(s.next)) +
+        suRow('Auto-renews', s.auto ? 'Yes' : 'No') +
+        suRow('Cancel by',   when) +
+      '</div>' +
+
+      '<div class="sgroup">' +
+        '<div class="eyebrow">Getting out<span class="line"></span></div>' +
+        suRow('Signed in as', esc(s.login)) +
+        '<div class="cfull' + (s.how ? '' : ' empty') + '" style="margin-top:14px">' +
+          (s.how ? esc(s.how) : 'No note on how to cancel this one yet.') +
+        '</div>' +
+      '</div>' +
+
+      '<div class="sheetacts"><button class="btn plain suedit">Edit</button></div>';
+  }
+
+  function openSub(i){
+    suSel = i; suMode = 'view';
+    drawSub();
+    /* a sheet always opens at the top — it used to keep the last one's scroll */
+    suBody.scrollTop = 0;
+    suWrap.classList.add('open');
+    document.body.classList.add('sheet-open');
+  }
+  function openNewSub(){
+    suMode = 'new'; suDraft = suBlank();
+    drawSub();
+    suBody.scrollTop = 0;
+    suWrap.classList.add('open');
+    document.body.classList.add('sheet-open');
+    suBody.querySelector('.sfname').focus();
+  }
+  function closeSub(){
+    suWrap.classList.remove('open');
+    document.body.classList.remove('sheet-open');
+  }
+
+  document.getElementById('suList').addEventListener('click', e => {
+    const r = e.target.closest('.sline');
+    if (r) openSub(+r.dataset.su);
+  });
+  document.getElementById('suScrim').addEventListener('click', closeSub);
+  suHead.addEventListener('click', e => {
+    if (e.target.closest('.sheetclose')) closeSub();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && suWrap.classList.contains('open')) closeSub();
+  });
+  suBody.addEventListener('click', e => {
+    /* a field is never a button — this is what let "Cancel by" close the sheet */
+    if (e.target.closest('input, select, textarea, label')) return;
+    if (e.target.closest('.suedit')){
+      suMode = 'edit'; drawSub(); suBody.scrollTop = 0;
+      suBody.querySelector('.sfname').focus();
+      return;
+    }
+    if (e.target.closest('.sfcancel')){
+      if (suMode === 'new'){ closeSub(); return; }
+      suMode = 'view'; drawSub(); suBody.scrollTop = 0;
+      return;
+    }
+    if (e.target.closest('.sfdel')){
+      SUBS.splice(suSel, 1);
+      drawSubs();
+      closeSub();
+      say('Deleted.');
+      return;
+    }
+    if (e.target.closest('.sfsave')){
+      const v = suRead();
+      if (!v.name){ say('Give it a name first.'); suBody.querySelector('.sfname').focus(); return; }
+      if (suMode === 'new'){ SUBS.push(v); suSel = SUBS.length - 1; }
+      else { SUBS[suSel] = v; }
+      suMode = 'view';
+      drawSubs();
+      drawSub();
+      suBody.scrollTop = 0;
+      say('Saved.');
+    }
+  });
+  document.getElementById('suAdd').addEventListener('click', openNewSub);
+
+  // pull down to close, same as the other sheets
+  let suPull = null;
+  const suGrab = document.getElementById('suGrab');
+  suGrab.addEventListener('pointerdown', e => {
+    suPull = { y: e.clientY };
+    suSheet.style.transition = 'none';
+    try { suGrab.setPointerCapture(e.pointerId); } catch(_){}
+  });
+  suGrab.addEventListener('pointermove', e => {
+    if (!suPull) return;
+    const dy = Math.max(0, e.clientY - suPull.y);
+    suPull.dy = dy;
+    suSheet.style.transform = 'translate(-50%,' + dy + 'px)';
+  });
+  function suGrabEnd(){
+    if (!suPull) return;
+    const dy = suPull.dy || 0;
+    suPull = null;
+    suSheet.style.transition = '';
+    if (dy > 110){
+      suSheet.style.transform = 'translate(-50%,var(--sheet-off))';
+      setTimeout(() => { closeSub(); suSheet.style.transform = ''; }, 300);
+    } else {
+      suSheet.style.transform = '';
+    }
+  }
+  suGrab.addEventListener('pointerup', suGrabEnd);
+  suGrab.addEventListener('pointercancel', suGrabEnd);
+  /* ================= end FINANCE · SUBSCRIPTIONS ================= */
 
   // ---------- installable ----------
   // the service worker is what lets the phone keep Aether as a real app:
