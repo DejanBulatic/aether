@@ -1,8 +1,8 @@
 {
-  "name": "Aether",
-  "short_name": "Aether",
-  "description": "A quiet place to run your projects.",
-  "start_url": "./index.html",
+  "name": "Cosmo",
+  "short_name": "Cosmo",
+  "description": "Projects, money, people and the day, in one place.",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

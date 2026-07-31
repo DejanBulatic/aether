@@ -1,14 +1,15 @@
-// Aether — service worker.
+// Cosmo — service worker.
 //
 // Its whole job: keep a copy of the app so it opens instantly and works with no
 // signal. The cache is named after a version. Bump VERSION when you publish and
-// the old copy is thrown away — that's the cure for "my phone still shows the
-// old screen", the same cache problem that had us renaming files all through
-// the design phase.
-
-const VERSION = 'v87';
-const CACHE = 'aether-' + VERSION;
-
+// the old copy is thrown away.
+//
+// Worth knowing which half of this the version actually governs: the page is
+// fetched network-first, so a new index.html appears on its own as soon as
+// there's signal. The bump is what refreshes the cache-first half — icons, the
+// manifest, the link preview — which otherwise never gets looked at again.
+const VERSION = 'v88';
+const CACHE = 'cosmo-' + VERSION;
 const SHELL = [
   './',
   './index.html',
@@ -17,9 +18,9 @@ const SHELL = [
   './icon-512.png',
   './icon-maskable-512.png',
   './apple-touch-icon.png',
-  './favicon.png'
+  './favicon.png',
+  './og.png'
 ];
-
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE)
@@ -27,7 +28,6 @@ self.addEventListener('install', e => {
       .then(() => self.skipWaiting())
   );
 });
-
 // on activate, drop every cache that isn't this version
 self.addEventListener('activate', e => {
   e.waitUntil(
@@ -36,13 +36,10 @@ self.addEventListener('activate', e => {
       .then(() => self.clients.claim())
   );
 });
-
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
-
   const url = new URL(req.url);
-
   // the page itself: try the network first, so a fresh publish shows up as soon
   // as there's signal, and fall back to the cached copy when there isn't
   if (req.mode === 'navigate'){
@@ -57,7 +54,6 @@ self.addEventListener('fetch', e => {
     );
     return;
   }
-
   // everything else — icons, fonts: cache first, it barely changes
   e.respondWith(
     caches.match(req).then(hit => hit || fetch(req).then(res => {
@@ -66,6 +62,6 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(c => c.put(req, copy));
       }
       return res;
-    }).catch(() => hit))
+    }).catch(() => caches.match(req)))
   );
 });
