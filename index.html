@@ -1748,10 +1748,18 @@
   }
   .acctid{display:flex;align-items:center;gap:11px;padding:10px 10px 13px;}
   .acctid .acctav{width:34px;height:34px;}
-  .acctidtxt{min-width:0;}
+  /* these are spans, so they have to be told to stack — inline boxes sit
+     side by side and ignore the margin between them */
+  .acctidtxt{min-width:0;display:flex;flex-direction:column;gap:3px;}
   /* both read as placeholders until there is a real account behind them */
-  .acctidnm{font-family:var(--font-body);font-size:13.5px;font-weight:500;color:var(--ink-faint);}
-  .acctidml{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.5px;color:var(--ink-faint);margin-top:3px;}
+  .acctidnm{
+    display:block;font-family:var(--font-body);font-size:13.5px;font-weight:500;color:var(--ink-faint);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .acctidml{
+    display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.5px;color:var(--ink-faint);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
   .acctrule{height:1px;background:var(--line);margin:0 4px 6px;}
   .acctrow{
     display:block;width:100%;text-align:left;cursor:pointer;
@@ -1782,8 +1790,8 @@
     /* it is a <button> living inside .nav, so it was being handed a nav
        item's dot along with a nav item's padding */
     .nav button.acctrail::before{content:none;display:none;}
-    .acctrail .acctav{width:64px;height:64px;}
-    .acctrail .acctav svg{width:29px;height:29px;}
+    .acctrail .acctav{width:50px;height:50px;}
+    .acctrail .acctav svg{width:23px;height:23px;}
     /* about 100px of room here, so a long name ends in an ellipsis */
     .acctrail .acctnm{
       display:block;font-family:var(--font-body);font-size:13px;min-width:0;
