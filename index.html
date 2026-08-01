@@ -1141,18 +1141,6 @@
     .railmark{display:flex;align-items:center;gap:9px;color:var(--ink-dim);padding:2px 10px 2px 7px;margin-bottom:26px;}
     .railmark .wm{height:16px;width:auto;}
 
-    /* pinned to the foot of the rail by margin-top:auto, with the hairline
-       above it that separates it from the nav items */
-    .accthead{display:none;}
-    .acctrail{
-      display:flex;margin-top:auto;padding:13px 7px 2px;
-      border-top:1px solid var(--line);
-    }
-    .acctrail .acctav{width:32px;height:32px;}
-    .acctrail .acctnm{
-      display:block;font-size:13px;min-width:0;
-      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-    }
 
     .nav button{
       text-align:left;padding:11px 14px;font-size:13px;border-radius:12px;
@@ -1773,6 +1761,35 @@
   }
   .acctrow:hover{background:var(--nav-on-bg);color:var(--accent-ink);}
   .acctrow.out:hover{background:transparent;color:var(--pink);}
+
+  @media (min-width:1000px){
+    /* These live here rather than in the main desktop block because .acct is
+       defined further down the stylesheet, and at equal specificity the later
+       rule wins — which is why the header avatar was still showing. */
+    .accthead{display:none;}
+
+    /* .nav .acctrail, not .acctrail — .nav button carries its own padding at
+       higher specificity and was winning by a pixel or two */
+    .nav .acctrail{
+      display:flex;margin-top:auto;align-items:center;
+      /* the orb's own left edge, so the two line up in both themes */
+      padding:14px 7px 2px 7px;gap:12px;border-radius:0;
+      /* nav buttons carry a 1px transparent border for their active state,
+         and it was shifting this one a pixel off the orb */
+      border:none;border-top:1px solid var(--line);
+    }
+    body[data-mode="light"] .nav .acctrail{padding-left:13px;}
+    /* it is a <button> living inside .nav, so it was being handed a nav
+       item's dot along with a nav item's padding */
+    .nav button.acctrail::before{content:none;display:none;}
+    .acctrail .acctav{width:64px;height:64px;}
+    .acctrail .acctav svg{width:29px;height:29px;}
+    /* about 100px of room here, so a long name ends in an ellipsis */
+    .acctrail .acctnm{
+      display:block;font-family:var(--font-body);font-size:13px;min-width:0;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    }
+  }
   /* ================= end ACCOUNT ================= */
 </style>
 </head>
